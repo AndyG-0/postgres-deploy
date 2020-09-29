@@ -15,7 +15,7 @@ pipeline {
             }
             steps {
                     echo 'Deploying using helm...'
-                    sh 'export KUBECONFIG=/var/lib/jenkins/config && helm upgrade mqtt-stable ./mqtt/ -i -n default -f ./mqtt/values.yaml --recreate-pods'
+                    sh 'export KUBECONFIG=/var/lib/jenkins/config && helm upgrade postgres bitnami/postgresql --values=./values.yaml'
             }
         }
     }

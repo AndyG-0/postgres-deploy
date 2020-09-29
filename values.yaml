@@ -146,7 +146,7 @@ postgresqlUsername: postgres
 # postgresqlPassword:
 
 ## PostgreSQL password using existing secret
-existingSecret: postgres.password
+existingSecret: postgres
 ##
 
 ## Mount PostgreSQL secret as a file instead of passing environment variable
@@ -229,10 +229,11 @@ masterAsStandBy:
 ## Specify dictionary of scripts to be run at first boot
 ## Alternatively, you can put your scripts under the files/docker-entrypoint-initdb.d directory
 ##
-# initdbScripts:
-#   my_init_script.sh: |
-#      #!/bin/sh
-#      echo "Do something."
+initdbScripts:
+  my_init_script.sh: |
+     #!/bin/sh
+     DB=homeassistant
+     psql -U postgres -c 'select 1' -d $DB &>dev/null || psql -U postgres -tc 'create database $DB'
 
 ## ConfigMap with scripts to be run at first boot
 ## NOTE: This will override initdbScripts
@@ -392,7 +393,7 @@ persistence:
   ## If defined, PVC must be created manually before volume will be bound
   ## The value is evaluated as a template, so, for example, the name can depend on .Release or .Chart
   ##
-  existingClaim: postgres-pvc
+  # existingClaim: postgres-pvc
 
   ## The path the volume will be mounted at, useful when using different
   ## PostgreSQL images.
